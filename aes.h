@@ -14,8 +14,8 @@ using namespace std;
  *  Only for shorter and clearer signatures on functions.
 **/
 
-typedef vector<unsigned char> Key;
-typedef vector<vector<unsigned char>> Keys;
+typedef vector<unsigned char> Array;
+typedef vector<vector<unsigned char>> Data;
 
 /**
  *  Macros for identify the operation desired.
@@ -42,13 +42,19 @@ typedef vector<vector<unsigned char>> Keys;
  *  Public functions.
 **/
 
-Keys key_schedule(Key &key);
+Data key_schedule(Array key);
+void operate(Array &data, Array key, int mode);
 
 /**
  *  Private functions.
 **/
 
-Key schedule_core(Key &key, int iterator);
-void rotate(Key &subkey);
+Array schedule_core(Array &key, int iterator);
+void rotate(Array &subkey);
+void add_round_key(Array &data, Array &key);
+void sub_bytes(Array &data, int mode);
+void shift_rows(Array &data, int mode);
+void shift_row(Array &data, int row, int shift);
+void mix_columns(Array &data, int mode);
 
 #endif

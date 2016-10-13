@@ -10,62 +10,51 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-	fstream file1 ("key256.txt", ios::out);
-	fstream file2 ("key192.txt", ios::out);
-	fstream file3 ("key128.txt", ios::out);
+	cout << "Test of 128 bits: " << endl;
+	Array key1 = gen_key(KEY_SIZE_128);
+	cout << "Key: ";
+	print_hex(key1);
+	Array data1;
+	for(int i=0; i<16; i++) data1.push_back('a' + i);
+	cout << "Plain text: ";
+	print_data(data1);
+	operate(data1, key1, ENCRYPTION_MODE);
+	cout << "Cipher text: ";
+	print_hex(data1);
+	operate(data1, key1, DECRYPTION_MODE);
+	cout << "Plain text: ";
+	print_data(data1);
+	cout << endl;
 
-	Key key1 = gen_key();
-	cout << "256 key: " << endl;
-	print_key(key1);
-	print_key(key1, file1);
-	file1.close();
+	cout << "Test of 192 bits: " << endl;
+	Array key2 = gen_key(KEY_SIZE_192);
+	cout << "Key: ";
+	print_hex(key2);
+	Array data2;
+	for(int i=0; i<24; i++) data2.push_back('a' + i);
+	cout << "Plain text: ";
+	print_data(data2);
+	operate(data2, key2, ENCRYPTION_MODE);
+	cout << "Cipher text: ";
+	print_hex(data2);
+	operate(data2, key2, DECRYPTION_MODE);
+	cout << "Plain text: ";
+	print_data(data2);
+	cout << endl;
 
-	Key key2 = gen_key(KEY_SIZE_192);
-	cout << "192 key: " << endl;
-	print_key(key2);
-	print_key(key2, file2);
-	file2.close();
-
-	Key key3 = gen_key(KEY_SIZE_128);
-	cout << "128 key: " << endl;
-	print_key(key3);
-	print_key(key3, file3);
-	file3.close();
-
-	cout << endl <<  "Los archivos se cierran y se vuelven a abrir..." << endl;
-
-	file1.open("key256.txt", ios::in);
-	file2.open("key192.txt", ios::in);
-	file3.open("key128.txt", ios::in);
-
-	key1 = read_key(file1);
-	key2 = read_key(file2);
-	key3 = read_key(file3);
-
-	cout << endl << "256 key: " << endl;
-	print_key(key1);
-	cout << "Key expansion: " << endl;
-	Keys keys1 = key_schedule(key1);
-	for(int i=0; i<keys1.size(); i++){
-		cout << i+1 << ".- ";
-		print_key(keys1[i]);
-	}
-
-	cout << endl << "192 key: " << endl;
-	print_key(key2);
-	cout << "Key expansion: " << endl;
-	Keys keys2 = key_schedule(key2);
-	for(int i=0; i<keys2.size(); i++){
-		cout << i+1 << ".- ";
-		print_key(keys2[i]);
-	}
-
-	cout << endl << "128 key: " << endl;
-	print_key(key3);
-	cout << "Key expansion: " << endl;
-	Keys keys3 = key_schedule(key3);
-	for(int i=0; i<keys3.size(); i++){
-		cout << i+1 << ".- ";
-		print_key(keys3[i]);
-	}
+	cout << "Test of 256 bits: " << endl;
+	Array key3 = gen_key(KEY_SIZE_256);
+	cout << "Key: ";
+	print_hex(key3);
+	Array data3;
+	for(int i=0; i<32; i++) data3.push_back('a' + i);
+	cout << "Plain text: ";
+	print_data(data3);
+	operate(data3, key3, ENCRYPTION_MODE);
+	cout << "Cipher text: ";
+	print_hex(data3);
+	operate(data3, key3, DECRYPTION_MODE);
+	cout << "Plain text: ";
+	print_data(data3);
+	cout << endl;
 }

@@ -15,15 +15,16 @@ using namespace std;
 
 #define CBC_MODE 1
 #define CTR_MODE 2
-#define CFB_MODE 3
+#define ECB_MODE 3
 
 /**
  *  Public functions.
  *  Pay atention to the defaults arguments.
 **/
 
-Key gen_key(int key_size = KEY_SIZE_256);
-void print_key(Key &key, ostream &out = cout);
-Key read_key(istream &in);
+Array gen_key(int key_size = KEY_SIZE_256);
+void print_hex(Array &key, ostream &out = cout);
+void print_data(Array &key, ostream &out = cout);
+Array read_key(istream &in);
 
 #endif
