@@ -43,13 +43,13 @@ typedef vector<vector<unsigned char>> Data;
 **/
 
 Data key_schedule(Array key);
-void operate(Array &data, Array key, int mode);
+Array schedule_core(Array &key, int iterator);
+void operate(Array &data, Data &key_expansion, int mode);
 
 /**
  *  Private functions.
 **/
 
-Array schedule_core(Array &key, int iterator);
 void rotate(Array &subkey);
 void add_round_key(Array &data, Array &key);
 void sub_bytes(Array &data, int mode);

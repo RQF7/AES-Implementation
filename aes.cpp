@@ -393,7 +393,7 @@ Data key_schedule(Array key)
 				 (size == 24) ? 12 :
 				 10;
 	Data keys;
-	
+	keys.push_back(key);
 	Array tmp = schedule_core(key, 0);
 
 	for(int i=0; i<rounds; i++){
@@ -455,22 +455,22 @@ void rotate(Array &subkey)
  *  The numbers of rounds depends of the length of te given key.
 **/
 
-void operate(Array &data, Array key, int mode)
+void operate(Array &data, Data &key_expansion, int mode)
 {
-	Data key_expansion = key_schedule(key);
 	int rounds = key_expansion.size();
 
 	//First round
 	add_round_key(data, 
-		(mode == ENCRYPTION_MODE) ? key : key_expansion[rounds - 1]);
+		(mode == ENCRYPTION_MODE) ? key_expansion[0] : 
+									key_expansion[rounds - 1]);
 
 	//Center rounds
-	for(int i = 1; i < rounds; i++){
+	for(int i = 1; i < rounds - 1; i++){
 		if(mode == ENCRYPTION_MODE){
 			sub_bytes(data, mode);
 			shift_rows(data, mode);
 			mix_columns(data, mode);
-			add_round_key(data, key_expansion[i - 1]);
+			add_round_key(data, key_expansion[i]);
 		}else{
 			shift_rows(data, mode);
 			sub_bytes(data, mode);
@@ -487,7 +487,7 @@ void operate(Array &data, Array key, int mode)
 	}else{
 		shift_rows(data, mode);
 		sub_bytes(data, mode);
-		add_round_key(data, key);
+		add_round_key(data, key_expansion[0]);
 	}
 }
 
