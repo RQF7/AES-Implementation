@@ -75,6 +75,12 @@ Array read_key(istream &in)
 	return key;
 }
 
+/**
+ *  process: main public function for process a file.
+ *  It uses the given mode of operation. The input and output
+ *  are given like a streams. 
+**/
+
 void process(Array key, istream &input, ostream &output , 
 			int operation, int mode){
 
@@ -127,6 +133,11 @@ void process(Array key, istream &input, ostream &output ,
 
 }
 
+/**
+ *  write_block: simple function for write an Array in the stream.
+ *  The stream must be opened in binary mode (ios::binary).
+**/
+
 void write_block(Array &block, ostream &out)
 {
 	int size = block.size();
@@ -134,6 +145,11 @@ void write_block(Array &block, ostream &out)
 	for(int i=0; i<size; i++) aux[i] = block[i];
 	out.write((char*)aux, size);
 }
+
+/**
+ *  read_block: simple function for read an Array from the stream.
+ *  The stream must be opened in binary mode (ios::binary).
+**/
 
 Array read_block(int block_size, istream &in)
 {
@@ -144,12 +160,22 @@ Array read_block(int block_size, istream &in)
 	return res;
 }
 
+/**
+ *  add: simple xoring of the elemento of the two arrays arguments.
+ *  The result is saved in the first argument and a reference of this is
+ *  returned.
+**/
+
 Array& add(Array &a, Array &b)
 {
 	for(int i=0; i<a.size(); i++)
 		a[i] ^= b[i];
 	return a;
 }
+
+/**
+ *  copy: Copy two Arrays objects.
+**/
 
 Array copy(Array &org)
 {
@@ -159,12 +185,22 @@ Array copy(Array &org)
 	return res;
 }
 
+/**
+ *  increment: Increment by n the last element of the Array.
+ *  This is used in the counter mode of operation.
+**/
+
 Array increment(Array a, int n)
 {
 	Array aux = copy(a);
 	aux[a.size() - 1] += n;
 	return aux;
 }
+
+/**
+ *  cbc: Code Block Chaining mode of operation.
+ *  Process the two file streams.
+**/
 
 void cbc(Data &keys, Array &iv, long long int num_blocks, int gap, 
 	istream &input, ostream &output)
@@ -198,6 +234,11 @@ void cbc(Data &keys, Array &iv, long long int num_blocks, int gap,
 
 	}
 }
+
+/**
+ *  cbc_inverse: reverse Code Block Chaining mode of operation.
+ *  Used for decrypting.
+**/
 
 void cbc_inverse(Data &keys, Array &iv, long long int size, 
 	istream &input, ostream &output)
@@ -238,6 +279,12 @@ void cbc_inverse(Data &keys, Array &iv, long long int size,
 
 	}
 }
+
+/**
+ *  ctr: Counter mode.
+ *  Receive the operation (ENCRYPT or DECRYPT). This iis because
+ *  both operations are performed in the same way in this mode.
+**/
 
 void ctr(Data &keys, Array &iv, long long int num_blocks, int gap, 
 	istream &input, ostream &output, int mode)
